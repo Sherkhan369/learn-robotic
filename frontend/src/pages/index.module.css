@@ -1,0 +1,144 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+  background: transparent ;/* dark black to dark blue */
+  color: white;
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.heroContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.heroText {
+  flex: 1;
+  text-align: left;
+}
+
+.heroLogo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: right;
+  justify-content: center;
+}
+
+.heroLogoImg {
+  max-width: 300px;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(255,255,255,0.2));
+  transition: transform 0.3s ease;
+}
+
+.heroLogoImg:hover {
+  transform: scale(1.05);
+}
+
+@media screen and (max-width: 996px) {
+  .heroContent {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .heroText {
+    text-align: center;
+  }
+}
+
+.modulesSection {
+  padding: 4rem 0;
+  background: transparent;
+  color: white;
+  /* margin: rem 0; */
+  border: none;
+
+}
+
+.moduleIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.moduleCard {
+  background: transparent;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  height: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.moduleCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+  border-color: #007bff;
+}
+
+.ctaSection {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #000;
+  padding: 4rem 0;
+  margin: 2rem 0;
+  border-radius: 8px;
+}
+
+.ctaSection h2 {
+  color: #000;
+  margin-bottom: 1rem;
+}
+
+.ctaSection p {
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+/* Removed unnecessary empty space - using proper padding instead */
+.modulesSection {
+  padding: 4rem 0;
+  background: transparent;
+  margin: 2rem 0;
+  border-radius: 8px;
+}
+
+@media screen and (max-width: 996px) {
+  .modulesSection {
+    padding: 2rem 0;
+  }
+
+  .ctaSection {
+    padding: 2rem 0;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .moduleCard {
+    margin-bottom: 1rem;
+  }
+}

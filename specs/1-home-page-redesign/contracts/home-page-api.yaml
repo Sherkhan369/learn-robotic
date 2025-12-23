@@ -1,0 +1,125 @@
+openapi: 3.0.0
+info:
+  title: Home Page API for Robotics Textbook
+  description: API for retrieving and updating home page content for the Physical AI & Humanoid Robotics Textbook
+  version: 1.0.0
+servers:
+  - url: https://robotic-textbook.example.com/api
+    description: Production server
+paths:
+  /home:
+    get:
+      summary: Get home page content
+      description: Retrieve all content displayed on the home page
+      responses:
+        '200':
+          description: Successful response with home page content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomePageContent'
+    put:
+      summary: Update home page content
+      description: Update the content displayed on the home page
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HomePageContent'
+      responses:
+        '200':
+          description: Home page content updated successfully
+        '400':
+          description: Invalid input
+  /modules:
+    get:
+      summary: Get all modules
+      description: Retrieve information about all four textbook modules
+      responses:
+        '200':
+          description: Successful response with modules information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Module'
+components:
+  schemas:
+    HomePageContent:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The main title of the home page
+          example: "Physical AI & Humanoid Robotics Textbook"
+        tagline:
+          type: string
+          description: The subtitle of the home page
+          example: "Comprehensive Guide to Building Intelligent Robotic Systems"
+        heroDescription:
+          type: string
+          description: Description in the hero section
+          example: "Explore the complete curriculum designed to take you from robotics fundamentals to advanced AI integration"
+        callToActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CallToAction'
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'
+    CallToAction:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text displayed on the button
+          example: "Start Learning - Introduction"
+        link:
+          type: string
+          description: The URL the button links to
+          example: "/docs/intro"
+        style:
+          type: string
+          description: The button styling class
+          example: "button--primary"
+    Feature:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The feature title
+          example: "Comprehensive Curriculum"
+        description:
+          type: string
+          description: Detailed explanation of the feature
+          example: "Four in-depth modules covering everything from ROS 2 fundamentals to advanced Vision-Language-Action systems"
+    Module:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the module
+          example: "module-1"
+        title:
+          type: string
+          description: The module name
+          example: "The Robotic Nervous System (ROS 2)"
+        subtitle:
+          type: string
+          description: Brief description of the module
+          example: "Foundation of robotic communication and control"
+        description:
+          type: string
+          description: Detailed description of the module content
+          example: "Learn about ROS 2 as the nervous system of robotic systems"
+        icon:
+          type: string
+          description: Emoji or icon representing the module
+          example: "🤖"
+        navigationLink:
+          type: string
+          description: URL to the module's first page
+          example: "/docs/module-1/chapter-1"

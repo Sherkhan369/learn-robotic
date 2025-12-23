@@ -1,0 +1,240 @@
+# API Contract: Physical AI & Humanoid Robotics Textbook
+
+## Overview
+This document defines the API contracts for the Physical AI & Humanoid Robotics textbook website. Since this is primarily a static site, the "API" refers to the content delivery and any potential backend services for features like search or user tracking.
+
+## Base URL
+```
+https://robotic-book.github.io/
+```
+
+## Content Delivery API
+
+### Get All Modules
+```
+GET /api/modules
+```
+
+**Description**: Retrieve all learning modules in the textbook
+
+**Response**:
+```json
+{
+  "modules": [
+    {
+      "id": "module-1",
+      "title": "The Robotic Nervous System (ROS 2)",
+      "description": "Introduction to ROS 2 architecture and components",
+      "order": 1,
+      "chapters": [
+        {
+          "id": "module-1-chapter-1",
+          "title": "Foundations of Physical AI and Embodied Intelligence",
+          "description": "Introduction to physical AI concepts",
+          "order": 1,
+          "path": "/module-1/chapter-1"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Status Codes**:
+- 200: Success
+- 500: Server error
+
+### Get Module by ID
+```
+GET /api/modules/{moduleId}
+```
+
+**Description**: Retrieve a specific learning module and its chapters
+
+**Path Parameters**:
+- moduleId: The ID of the module (e.g., "module-1")
+
+**Response**:
+```json
+{
+  "id": "module-1",
+  "title": "The Robotic Nervous System (ROS 2)",
+  "description": "Introduction to ROS 2 architecture and components",
+  "order": 1,
+  "chapters": [
+    {
+      "id": "module-1-chapter-1",
+      "title": "Foundations of Physical AI and Embodied Intelligence",
+      "description": "Introduction to physical AI concepts",
+      "order": 1,
+      "path": "/module-1/chapter-1",
+      "content": "Full chapter content in HTML format"
+    }
+  ]
+}
+```
+
+**Status Codes**:
+- 200: Success
+- 404: Module not found
+- 500: Server error
+
+### Get Chapter by ID
+```
+GET /api/chapters/{chapterId}
+```
+
+**Description**: Retrieve a specific chapter content
+
+**Path Parameters**:
+- chapterId: The ID of the chapter (e.g., "module-1-chapter-1")
+
+**Response**:
+```json
+{
+  "id": "module-1-chapter-1",
+  "title": "Foundations of Physical AI and Embodied Intelligence",
+  "description": "Introduction to physical AI concepts",
+  "moduleId": "module-1",
+  "moduleTitle": "The Robotic Nervous System (ROS 2)",
+  "order": 1,
+  "path": "/module-1/chapter-1",
+  "content": "Full chapter content in HTML format",
+  "learningObjectives": [
+    "Understand the basics of physical AI",
+    "Identify key components of embodied intelligence"
+  ],
+  "estimatedReadingTime": 15,
+  "previousChapter": null,
+  "nextChapter": {
+    "id": "module-1-chapter-2",
+    "title": "Overview of Humanoid Robotics and Sensor Systems",
+    "path": "/module-1/chapter-2"
+  }
+}
+```
+
+**Status Codes**:
+- 200: Success
+- 404: Chapter not found
+- 500: Server error
+
+### Search Content
+```
+GET /api/search
+```
+
+**Description**: Search across all textbook content
+
+**Query Parameters**:
+- q: Search query string
+- limit: Maximum number of results (default: 10)
+- offset: Number of results to skip (default: 0)
+
+**Response**:
+```json
+{
+  "query": "ROS 2 architecture",
+  "totalResults": 5,
+  "results": [
+    {
+      "id": "module-1-chapter-3",
+      "title": "ROS 2 Architecture, Nodes, Topics, Services, Actions",
+      "path": "/module-1/chapter-3",
+      "moduleId": "module-1",
+      "moduleTitle": "The Robotic Nervous System (ROS 2)",
+      "snippet": "ROS 2 uses a distributed architecture with nodes communicating through topics, services, and actions..."
+    }
+  ]
+}
+```
+
+**Status Codes**:
+- 200: Success
+- 400: Invalid query parameters
+- 500: Server error
+
+## User Interaction API
+
+### Track Page View
+```
+POST /api/analytics/pageview
+```
+
+**Description**: Track when a user views a page
+
+**Request Body**:
+```json
+{
+  "pagePath": "/module-1/chapter-1",
+  "userId": "optional-user-id",
+  "timestamp": "2025-12-22T10:30:00Z",
+  "referrer": "https://example.com"
+}
+```
+
+**Response**:
+```json
+{
+  "status": "tracked",
+  "timestamp": "2025-12-22T10:30:00Z"
+}
+```
+
+**Status Codes**:
+- 200: Success
+- 400: Invalid request body
+- 500: Server error
+
+### Save User Progress
+```
+POST /api/user/progress
+```
+
+**Description**: Save user's reading progress
+
+**Headers**:
+- Authorization: Bearer {token} (optional)
+
+**Request Body**:
+```json
+{
+  "userId": "user-123",
+  "chapterId": "module-1-chapter-1",
+  "progressPercentage": 75,
+  "lastReadSection": "section-3",
+  "timestamp": "2025-12-22T10:30:00Z"
+}
+```
+
+**Response**:
+```json
+{
+  "status": "saved",
+  "chapterId": "module-1-chapter-1",
+  "progressPercentage": 75
+}
+```
+
+**Status Codes**:
+- 200: Success
+- 400: Invalid request body
+- 401: Unauthorized (if authentication required)
+- 500: Server error
+
+## Error Response Format
+All error responses follow this format:
+```json
+{
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Human-readable error message",
+    "details": "Additional error details if applicable"
+  }
+}
+```
+
+## Common Headers
+- Content-Type: application/json
+- Accept: application/json
+- Authorization: Bearer {token} (for authenticated endpoints)
