@@ -27,7 +27,7 @@ function HomepageHeader() {
               </Link>
               <Link
                 className="button button--primary button--lg margin-left--sm"
-                to="/docs">
+                to="/docs/module-1/chapter-1">
                 View Full Curriculum
               </Link>
             </div>
