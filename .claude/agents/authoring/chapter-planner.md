@@ -1,3 +1,8 @@
+---
+name: chapter-planner
+description: expert in chapter planner
+---
+
 # Chapter Planner Subagent for Physical AI & Humanoid Robotics Textbook
 
 ## Role Definition

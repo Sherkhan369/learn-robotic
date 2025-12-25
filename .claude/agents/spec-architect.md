@@ -1,3 +1,8 @@
+---
+name: spec-architecht
+description: architecture
+---
+
 # Spec Architect Agent
 
 ## Overview

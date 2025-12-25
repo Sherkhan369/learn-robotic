@@ -1,0 +1,318 @@
+openapi: 3.0.3
+info:
+  title: RAG Chatbot API for Physical AI & Humanoid Robotics Textbook
+  description: API for the RAG chatbot system that enables students to ask questions about textbook content
+  version: 1.0.0
+  contact:
+    name: RoboLearn Platform Team
+    email: team@robolearn.example.com
+
+servers:
+  - url: https://rag-chatbot-api.example.com
+    description: Production server
+  - url: http://localhost:8000
+    description: Development server
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Check the health status of the RAG chatbot service
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy]
+                    example: healthy
+                  components:
+                    type: object
+                    properties:
+                      database:
+                        type: string
+                        example: ok
+                      vector_db:
+                        type: string
+                        example: ok
+                      llm:
+                        type: string
+                        example: ok
+                required:
+                  - status
+                  - components
+
+  /api/v1/ingest:
+    post:
+      summary: Ingest textbook content
+      description: Process and store textbook content into the vector database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source_path:
+                  type: string
+                  description: Path to the source MDX files
+                  example: "/path/to/textbook/docs"
+                force_rebuild:
+                  type: boolean
+                  description: Whether to rebuild existing content
+                  default: false
+              required:
+                - source_path
+      responses:
+        '200':
+          description: Ingestion completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [completed]
+                    example: completed
+                  chunks_processed:
+                    type: integer
+                    example: 120
+                  documents:
+                    type: integer
+                    example: 15
+                  message:
+                    type: string
+                    example: "Successfully processed 120 chunks from 15 documents"
+                required:
+                  - status
+                  - chunks_processed
+                  - documents
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/query:
+    post:
+      summary: General RAG query
+      description: Query the textbook content for general questions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: The user's question about the textbook content
+                  example: "Explain ROS 2 nodes"
+                session_id:
+                  type: string
+                  description: Session identifier for tracking
+                  example: "sess_12345"
+                user_id:
+                  type: string
+                  description: Optional user identifier
+                  example: "user_67890"
+              required:
+                - query
+      responses:
+        '200':
+          description: Query processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    description: The generated response to the query
+                    example: "ROS 2 nodes are..."
+                  sources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        document_id:
+                          type: string
+                          example: "doc_001"
+                        title:
+                          type: string
+                          example: "ROS 2 Fundamentals"
+                        page:
+                          type: integer
+                          example: 45
+                  query_id:
+                    type: string
+                    example: "query_abc123"
+                  confidence_score:
+                    type: number
+                    format: float
+                    minimum: 0
+                    maximum: 1
+                    example: 0.85
+                required:
+                  - response
+                  - sources
+                  - query_id
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/query/selected-text:
+    post:
+      summary: Selected text query
+      description: Query based only on selected/highlighted text
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                selected_text:
+                  type: string
+                  description: The text that was selected/highlighted by the user
+                  example: "The ROS 2 node concept allows for modular design..."
+                query:
+                  type: string
+                  description: The user's question about the selected text
+                  example: "What does this mean?"
+                session_id:
+                  type: string
+                  description: Session identifier for tracking
+                  example: "sess_12345"
+              required:
+                - selected_text
+                - query
+      responses:
+        '200':
+          description: Query processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    description: The generated response to the query
+                    example: "This means that ROS 2 uses nodes to create a modular architecture..."
+                  sources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        document_id:
+                          type: string
+                          example: "doc_001"
+                        title:
+                          type: string
+                          example: "ROS 2 Fundamentals"
+                        page:
+                          type: integer
+                          example: 45
+                  query_id:
+                    type: string
+                    example: "query_def456"
+                required:
+                  - response
+                  - sources
+                  - query_id
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/query/{query_id}/feedback:
+    post:
+      summary: Submit feedback for a query
+      description: Allow users to provide feedback on query responses
+      parameters:
+        - name: query_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the query to provide feedback for
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  description: User rating (1-5 stars)
+                  minimum: 1
+                  maximum: 5
+                  example: 4
+                comment:
+                  type: string
+                  description: Optional feedback comment
+                  example: "The response was helpful but could include more examples"
+              required:
+                - rating
+      responses:
+        '200':
+          description: Feedback submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                  type: string
+                  enum: [success]
+                  example: success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  responses:
+    BadRequest:
+      description: Bad request - invalid input parameters
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid input parameters"
+              details:
+                type: object
+                example: {"query": "Query cannot be empty"}
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Query not found"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Internal server error occurred"

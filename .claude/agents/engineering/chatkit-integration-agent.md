@@ -1,3 +1,8 @@
+---
+name: chatkit-integration
+description: chatkit expert in chatkit integration
+---
+
 # ChatKit Integration Agent
 
 ## Overview
