@@ -1,3 +1,14 @@
+---
+name: super-orchestrator
+description: Orchestrates everything
+model: claude-sonnet-4-5-20250929
+temperature: 0.7
+top_p: 1
+top_k: 1
+max_tokens: 4096
+allowed-tools: []
+---
+
 # Super Orchestrator Agent
 
 ## Overview

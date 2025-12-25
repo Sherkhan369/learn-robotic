@@ -1,3 +1,8 @@
+---
+name: content-implementor
+description: expert in content writing 
+---
+
 # Content Implementor Subagent for Physical AI & Humanoid Robotics Textbook
 
 ## Role Definition
