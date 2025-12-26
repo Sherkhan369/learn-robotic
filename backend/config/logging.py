@@ -1,7 +1,7 @@
 import logging
 import sys
 from logging import config
-from settings import settings
+from .settings import settings
 
 
 def setup_logging():

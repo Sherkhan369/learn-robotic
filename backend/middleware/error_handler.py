@@ -36,3 +36,5 @@ def add_error_handlers(app: FastAPI):
             status_code=500,
             content={"error": {"message": "Internal server error", "status_code": 500}}
         )
+        
+        

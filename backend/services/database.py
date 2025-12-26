@@ -47,13 +47,23 @@ if "sslrootcert=" in db_url:
     db_url = re.sub(r'[&?]sslrootcert=[^&]*', '', db_url)
     db_url = db_url.replace('?&', '?').replace('&&', '&')
 
-engine = create_async_engine(
-    db_url,
-    echo=settings.DEBUG,
-    pool_pre_ping=True,
-    pool_size=5,
-    max_overflow=10
-)
+# Configure engine differently based on database type
+if "sqlite" in db_url:
+    # SQLite doesn't support pool_size and max_overflow
+    engine = create_async_engine(
+        db_url,
+        echo=settings.DEBUG,
+        pool_pre_ping=True
+    )
+else:
+    # PostgreSQL supports pool parameters
+    engine = create_async_engine(
+        db_url,
+        echo=settings.DEBUG,
+        pool_pre_ping=True,
+        pool_size=5,
+        max_overflow=10
+    )
 
 # Create async session
 AsyncSessionLocal = sessionmaker(

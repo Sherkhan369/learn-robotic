@@ -20,9 +20,9 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Module 1: The Robotic Nervous System (ROS 2)',
       items: [
-        'module-1/chapter-1',
-        'module-1/chapter-2',
-        'module-1/chapter-3',
+        'module-1/chapter-1-personalized',
+        'module-1/chapter-2-personalized',
+        'module-1/chapter-3-personalized',
         'module-1/chapter-4',
       ],
       link: {
