@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     USE_OPENROUTER: bool = True
     CHAT_MODEL: str = "gpt-4-turbo"
 
+
     class Config:
         env_file = ".env"
         case_sensitive = True

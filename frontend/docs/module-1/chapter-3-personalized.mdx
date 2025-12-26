@@ -1,0 +1,159 @@
+---
+sidebar_position: 3
+title: "Chapter 3: Services and Actions in ROS 2"
+description: "Understanding synchronous and asynchronous communication patterns"
+---
+
+
+
+## Services and Actions in ROS 2
+
+This chapter covers the different communication patterns available in ROS 2 beyond topics, including services for synchronous communication and actions for more complex interactions.
+
+### Services (Simple Explanation)
+
+**Services** are like making a phone call - you ask for something and wait for the answer right away.
+
+#### Example:
+- You: "Robot, please open the door" (Request)
+- Robot: "OK, door is open" (Response)
+
+#### When to use Services:
+- When you need a direct answer
+- For simple tasks that complete quickly
+- When you want to wait for a result before continuing
+
+### Actions (Simple Explanation)
+
+**Actions** are like assigning a long task - you ask for something that takes time, and you get updates while it's working.
+
+#### Example:
+- You: "Robot, please navigate to the kitchen" (Goal)
+- Robot: "On my way, 30% complete" (Feedback)
+- Robot: "I made it to the kitchen!" (Result)
+
+#### When to use Actions:
+- For tasks that take a long time
+- When you want updates during the task
+- When you might need to cancel the task
+
+
+### Services in Detail
+
+Services provide a request/reply communication pattern that is synchronous and blocking. A service client sends a request and waits for a response from the service server. This is useful for operations that have a clear beginning and end.
+
+#### Creating a Service:
+```python
+# Define service interface in .srv file
+string request
+---
+string response
+```
+
+#### Service Server:
+```python
+from example_interfaces.srv import AddTwoInts
+
+def add_two_ints_callback(request, response):
+    response.sum = request.a + request.b
+    return response
+
+service = node.create_service(AddTwoInts, 'add_two_ints', add_two_ints_callback)
+```
+
+#### Service Client:
+```python
+client = node.create_client(AddTwoInts, 'add_two_ints')
+request = AddTwoInts.Request()
+request.a = 1
+request.b = 2
+future = client.call_async(request)
+```
+
+
+### Advanced Service Concepts
+
+Services in ROS 2 implement the request/response pattern with configurable Quality of Service (QoS) settings. Advanced features include:
+
+- **Service Introspection**: Discovering available services at runtime
+- **Service Type Information**: Runtime type checking and validation
+- **Custom Service Types**: Defining complex request/response structures
+
+#### Performance Considerations:
+- Services are synchronous and block the calling thread
+- For high-frequency requests, consider using topics instead
+- Services should complete quickly to avoid blocking other operations
+
+#### Service Quality of Service:
+- **Reliability**: Best effort vs reliable
+- **Durability**: Volatile vs transient local
+- **History**: Keep last vs keep all requests
+
+
+### Actions in Detail
+
+#### Actions (Long Tasks)
+Actions are perfect for tasks that take time:
+
+**Examples:**
+- Moving a robot across a room
+- Processing sensor data
+- Running a cleaning routine
+
+**Key Features:**
+- You can get updates while it's working
+- You can cancel the task if needed
+- You get the final result when it's done
+
+
+#### Action Implementation
+
+Actions are defined in `.action` files with three parts: Goal, Result, and Feedback.
+
+```action
+# Goal - what you want to do
+int32 order
+string name
+---
+# Result - what happened
+bool completed
+string message
+---
+# Feedback - updates during the task
+float32 percent_complete
+string status
+```
+
+#### Action Server:
+```python
+from rclpy.action import ActionServer
+from my_package.action import NavigateToPose
+
+class NavigateActionServer:
+    def __init__(self):
+        self._action_server = ActionServer(
+            self,
+            NavigateToPose,
+            'navigate_to_pose',
+            self.execute_callback)
+```
+
+
+#### Advanced Action Features
+
+**Goal Preemption**: Canceling current goal for a new one
+**Multi-goal Handling**: Managing multiple concurrent goals
+**Result Expiration**: Configurable result retention time
+
+#### Memory Management:
+- Actions maintain state for long-running operations
+- Goal handles and result storage require careful management
+- Feedback messages can be rate-limited to reduce overhead
+
+#### Error Handling:
+- Goal rejection policies
+- Execution failure handling
+- Client disconnection management
+
+
+

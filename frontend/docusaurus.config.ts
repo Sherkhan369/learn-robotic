@@ -141,7 +141,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/your-organization/robotic-book',
+              href: 'https://github.com/Sherkhan369/robotic-book',
             },
           ],
         },

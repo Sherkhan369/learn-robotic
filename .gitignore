@@ -64,8 +64,26 @@ es/
 esm/
 umd/
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+env.bak/
+venv.bak/
+backendvenv/
+
 # Local development
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Test files
+test_*.py
+*_test.py
+test_*.py.bak
+*_test.py.bak
