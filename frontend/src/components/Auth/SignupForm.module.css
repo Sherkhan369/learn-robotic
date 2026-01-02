@@ -1,0 +1,115 @@
+.formContainer {
+  width: 100%;
+}
+
+.errorMessage {
+  background-color: #fee;
+  color: #c33;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #c33;
+  font-size: 14px;
+}
+
+[data-theme='dark'] .errorMessage {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: #fca5a5;
+  border-left-color: #dc2626;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ifm-font-color-base);
+}
+
+.formGroup input,
+.formGroup select {
+  padding: 12px 16px;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  transition: all 0.2s;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 3px var(--ifm-color-primary-lightest);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.submitButton {
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--ifm-color-primary), var(--ifm-color-primary-dark));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 8px;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.authLinks {
+  margin-top: 24px;
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.authLinks p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.authLinks a {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.authLinks a:hover {
+  color: var(--ifm-color-primary-dark);
+  text-decoration: underline;
+}
