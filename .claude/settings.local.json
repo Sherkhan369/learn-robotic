@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(mv \"frontend/src/theme/NavbarItem/CustomNavbarItem.tsx\" \"frontend/src/theme/NavbarItem/ThemeToggle.tsx\")",
+      "Bash(python:*)",
+      "Bash(PYTHONUTF8=1 python:*)"
+    ]
+  }
+}

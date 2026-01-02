@@ -1,4 +1,4 @@
-import openai
+from openai import AsyncOpenAI
 from typing import List
 from config.settings import settings
 import logging
@@ -12,15 +12,17 @@ class LLMService:
             # Use OpenRouter
             self.api_key = settings.OPENROUTER_API_KEY
             self.model = settings.CHAT_MODEL
-            openai.api_key = self.api_key
-            openai.base_url = "https://openrouter.ai/api/v1"
+            self.client = AsyncOpenAI(
+                api_key=self.api_key,
+                base_url="https://openrouter.ai/api/v1"
+            )
         else:
             # Use OpenAI directly
             self.api_key = settings.OPENAI_API_KEY
             if not self.api_key:
                 raise ValueError("OPENAI_API_KEY must be provided when not using OpenRouter")
             self.model = settings.CHAT_MODEL
-            openai.api_key = self.api_key
+            self.client = AsyncOpenAI(api_key=self.api_key)
 
     async def generate_response(self, query: str, context_chunks: List[str], system_prompt: str = None) -> str:
         """
@@ -51,7 +53,7 @@ class LLMService:
                 raise ValueError("No API key provided. Please configure OPENROUTER_API_KEY or OPENAI_API_KEY in your environment.")
 
             # Make the API call (works with both OpenAI and OpenRouter)
-            response = await openai.ChatCompletion.acreate(
+            response = await self.client.chat.completions.create(
                 model=self.model,
                 messages=[
                     {"role": "system", "content": system_message},

@@ -2,6 +2,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
+
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
@@ -68,12 +69,11 @@ const config: Config = {
     ],
   ],
 
+
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
-    colorMode: {
-      respectPrefersColorScheme: true,
-    },
     navbar: {
       title: 'Robotics Textbook',
       logo: {
@@ -94,6 +94,12 @@ const config: Config = {
           position: 'right',
         },
       ],
+    
+    },
+    colorMode: {
+      defaultMode: 'dark',          // ya 'light' jo chaho
+      disableSwitch: false,         // false rakho toggle enable karne ke liye
+      respectPrefersColorScheme: true,
     },
     footer: {
       style: 'dark',

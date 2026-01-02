@@ -5,9 +5,19 @@
  */
 
 /* Deployment trigger */
-/* Set the body background to the dark gradient */
+/* Set the body background with theme support */
 body {
-  background: linear-gradient(135deg, #000000 0%, #001f3f 100%);
+  background: linear-gradient(rgba(134, 110, 218, 0.9), #886FD0), url('/img/bg.png') no-repeat center center fixed;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Theme-aware body background */
+[data-theme='dark'] body {
+  background: linear-gradient(rgba(70, 50, 150, 0.9), #46327e), url('/img/bg.png') no-repeat center center fixed;
+  background-size: cover;
+  background-position: center;
   background-attachment: fixed;
 }
 
@@ -34,12 +44,54 @@ body {
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* Dark mode background for educational components */
+  --learning-objectives-bg: rgba(51, 146, 93, 0.15);
+  --key-takeaways-bg: rgba(37, 194, 160, 0.15);
+  --exercise-bg: rgba(93, 106, 142, 0.15);
+}
+
+/* Light mode variables */
+:root {
+  --learning-objectives-bg: rgba(51, 146, 93, 0.1);
+  --key-takeaways-bg: rgba(37, 194, 160, 0.1);
+  --exercise-bg: rgba(93, 106, 142, 0.1);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: var(--ifm-navbar-background-color, #ffffff);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ifm-font-color-base);
+  transition: all var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+}
+
+.theme-toggle:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+[data-theme='dark'] .theme-toggle {
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-color-white);
+}
+
+[data-theme='dark'] .theme-toggle:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
 }
 
 /* Educational components styling */
 .learning-objectives {
-  border-left: 4px solid #33925d;
-
+  background-color: var(--learning-objectives-bg);
+  border-left: 4px solid var(--ifm-color-primary);
   padding: 1rem;
   margin: 1.5rem 0;
   border-radius: 0 4px 4px 0;
@@ -47,7 +99,7 @@ body {
 
 .learning-objectives h3 {
   margin-top: 0;
-  color: #29784c;
+  color: var(--ifm-color-primary);
   font-size: 1.1rem;
 }
 
@@ -56,8 +108,8 @@ body {
 }
 
 .key-takeaways {
-  border-left: 4px solid #25c2a0;
-  
+  background-color: var(--key-takeaways-bg);
+  border-left: 4px solid var(--ifm-color-primary);
   padding: 1rem;
   margin: 1.5rem 0;
   border-radius: 0 4px 4px 0;
@@ -65,7 +117,7 @@ body {
 
 .key-takeaways h3 {
   margin-top: 0;
-  color: #21af90;
+  color: var(--ifm-color-primary);
   font-size: 1.1rem;
 }
 
@@ -74,7 +126,8 @@ body {
 }
 
 .exercise {
-  border-left: 4px solid #5d6a8e;
+  background-color: var(--exercise-bg);
+  border-left: 4px solid var(--ifm-color-primary);
   padding: 1rem;
   margin: 1.5rem 0;
   border-radius: 0 4px 4px 0;
@@ -82,7 +135,7 @@ body {
 
 .exercise h3 {
   margin-top: 0;
-  color: #5d6a8e;
+  color: var(--ifm-color-primary);
   font-size: 1.1rem;
 }
 
